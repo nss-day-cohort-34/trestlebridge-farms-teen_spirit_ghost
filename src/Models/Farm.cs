@@ -38,6 +38,10 @@ namespace Trestlebridge.Models
     public void AddPlowedField(PlowedField field)
     {
       PlowedFields.Add(field);
+      Console.WriteLine();
+      Console.WriteLine($"New Plowed Field Added!");
+      System.Threading.Thread.Sleep(3000);
+
     }
 
     public override string ToString()
