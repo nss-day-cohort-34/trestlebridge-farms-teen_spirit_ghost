@@ -8,10 +8,12 @@ namespace Trestlebridge.Models.Facilities
 {
   public class PlowedField : IFacility<ISeedProducing>
   {
-    private int _capacity = 13;
+    private int _capacity = 3; // set back to 13 after testing
     private Guid _id = Guid.NewGuid();
 
     private List<ISeedProducing> _plants = new List<ISeedProducing>();
+
+    public int PlantCount { get { return _plants.Count; } }
 
     public double Capacity
     {
@@ -40,7 +42,7 @@ namespace Trestlebridge.Models.Facilities
       StringBuilder output = new StringBuilder();
       string shortId = $"{this._id.ToString().Substring(this._id.ToString().Length - 6)}";
       string plural = "s";
-      if (this._plants.Count == 0) plural = "";
+      if (this._plants.Count == 1) plural = "";
       output.Append($"Plowed field {shortId} has {this._plants.Count} plant{plural}\n");
       this._plants.ForEach(a => output.Append($"   {a}\n"));
 

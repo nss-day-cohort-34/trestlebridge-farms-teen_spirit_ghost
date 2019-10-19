@@ -8,9 +8,11 @@ namespace Trestlebridge.Models.Facilities
 {
   public class NaturalField : IFacility<ICompostProducing>
   {
-    private int _capacity = 10;
+    private int _capacity = 4; // set back to 10 after testing
     private Guid _id = Guid.NewGuid();
 
+
+    public int PlantCount { get { return _plants.Count; } }
     private List<ICompostProducing> _plants = new List<ICompostProducing>();
 
     public double Capacity
@@ -38,8 +40,9 @@ namespace Trestlebridge.Models.Facilities
     {
       StringBuilder output = new StringBuilder();
       string shortId = $"{this._id.ToString().Substring(this._id.ToString().Length - 6)}";
-
-      output.Append($"Natural field {shortId} has {this._plants.Count} plant\n");
+      string plural = "s";
+      if (this._plants.Count == 1) plural = "";
+      output.Append($"Natural field {shortId} has {this._plants.Count} plant{plural}\n");
       this._plants.ForEach(a => output.Append($"   {a}\n"));
 
       return output.ToString();

@@ -37,17 +37,17 @@ namespace Trestlebridge.Models
       }
     }
 
-    public void PauseForMessage()
+    public static void PauseForMessage()
     {
       Thread.Sleep(2000);
     }
+
     public void AddPlowedField(PlowedField field)
     {
       PlowedFields.Add(field);
       Console.WriteLine();
       Console.WriteLine($"New Plowed Field Added!");
       PauseForMessage();
-
     }
     public void AddNaturalField(NaturalField field)
     {
@@ -70,7 +70,6 @@ namespace Trestlebridge.Models
     public override string ToString()
     {
       StringBuilder report = new StringBuilder();
-
       DuckHouses.ForEach(dh => report.Append(dh));
       GrazingFields.ForEach(gf => report.Append(gf));
       PlowedFields.ForEach(pf => report.Append(pf));
