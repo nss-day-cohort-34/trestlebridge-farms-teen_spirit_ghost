@@ -1,5 +1,6 @@
 using System;
 using System.Text;
+using System.Linq;
 using System.Collections.Generic;
 using Trestlebridge.Interfaces;
 
@@ -8,13 +9,31 @@ namespace Trestlebridge.Models.Facilities
 {
   public class PlowedField : IFacility<ISeedProducing>
   {
-    private int _capacity = 3; // set back to 13 after testing
+    private int _capacity = 5; // set back to 13 after testing
     private Guid _id = Guid.NewGuid();
 
     private List<ISeedProducing> _plants = new List<ISeedProducing>();
 
     public int PlantCount { get { return _plants.Count; } }
 
+    public string PlantTotal
+    {
+      get
+      {
+        var grouped = _plants.GroupBy(plant => plant.Type);
+        string output = ":";
+        foreach (var item in grouped)
+        {
+          string itemDetails = $" [{item.Key}: {item.Count()}]";
+          output += itemDetails;
+        }
+        if (output == ":")
+        {
+          return "";
+        }
+        return output;
+      }
+    }
     public double Capacity
     {
       get
@@ -26,7 +45,6 @@ namespace Trestlebridge.Models.Facilities
     public void AddResource(ISeedProducing plant)
     {
       _plants.Add(plant);
-
     }
 
     public void AddResource(List<ISeedProducing> plants)

@@ -42,6 +42,16 @@ namespace Trestlebridge.Models
       Thread.Sleep(2000);
     }
 
+    public string Pluralize(int num)
+    {
+      string plural = "s";
+      if (num == 1)
+      {
+        return "";
+      }
+      return plural;
+    }
+
     public void AddPlowedField(PlowedField field)
     {
       PlowedFields.Add(field);

@@ -41,15 +41,13 @@ namespace Trestlebridge.Actions
 
 
       // BEGIN SELECTION PROCESS
-      Console.WriteLine($"Field Options:");
 
       if (isSeedProducingType && isCompostProducingType)
       {
         // WHEN NO FIELDS AVAILABLE
         if (plowedAvailable.Count == 0 && naturalAvailable.Count == 0)
         {
-          Console.WriteLine("NO FIELDS AVAILBLE.");
-          Farm.PauseForMessage();
+          Console.WriteLine("!! NO FIELDS AVAILBLE !!");
           ReturnToMainMessage();
         }
         // WHEN FIELDS ARE AVAILABLE
@@ -60,14 +58,19 @@ namespace Trestlebridge.Actions
 
           for (int i = 0; i < plowedAvailable.Count; i++)
           {
-            Console.WriteLine($"  {i + 1}. Plowed Field ({plowedAvailable[i].PlantCount} rows of plants)");
+            int currentCount = plowedAvailable[i].PlantCount;
+            string plantTotal = plowedAvailable[i].PlantTotal;
+
+            Console.WriteLine($"  {i + 1}. Plowed Field ({currentCount} row{farm.Pluralize(currentCount)} of plants{plantTotal})");
           }
 
           if (naturalAvailable.Count > 0) Console.WriteLine("For Compost");
 
           for (int i = plowedAvailable.Count; i < naturalAvailable.Count + plowedAvailable.Count; i++)
           {
-            Console.WriteLine($"  {i + 1}. Natural Field  ({naturalAvailable[i - plowedAvailable.Count].PlantCount} rows of plants)");
+            int currentCount = naturalAvailable[i - plowedAvailable.Count].PlantCount;
+            string plantTotal = naturalAvailable[i - plowedAvailable.Count].PlantTotal;
+            Console.WriteLine($"  {i + 1}. Natural Field ({currentCount} row{farm.Pluralize(currentCount)} of plants{plantTotal})");
           }
           Console.WriteLine();
           Console.WriteLine($"Place the {plantType.Name} where?");
@@ -90,38 +93,61 @@ namespace Trestlebridge.Actions
       }
       else if (isSeedProducingType)
       {
-        // Console.WriteLine("For Seed");
-        for (int i = 0; i < plowedAvailable.Count; i++)
-        // for (int i = 0; i < plowedFieldCount; i++)
+        // WHEN NO FIELDS AVAILABLE
+        if (plowedAvailable.Count == 0)
         {
-          Console.WriteLine($"  {i + 1}. Plowed Field ({plowedAvailable[i].PlantCount} rows of plants)");
+          Console.WriteLine("!! NO FIELDS AVAILBLE !!");
+          ReturnToMainMessage();
         }
-        Console.WriteLine();
-        Console.WriteLine($"Place the {plantType.Name} where?");
-        Console.Write("> ");
+        // WHEN FIELDS ARE AVAILABLE
+        else
+        {
+          Console.WriteLine("For Seed");
+          for (int i = 0; i < plowedAvailable.Count; i++)
+          {
+            int currentCount = plowedAvailable[i].PlantCount;
+            string plantTotal = plowedAvailable[i].PlantTotal;
+            Console.WriteLine($"  {i + 1}. Plowed Field ({currentCount} row{farm.Pluralize(currentCount)} of plants{plantTotal})");
+          }
+          Console.WriteLine();
+          Console.WriteLine($"Place the {plantType.Name} where?");
+          Console.Write("> ");
 
-        int choiceInput = Int32.Parse(Console.ReadLine());
-        int choice = choiceInput - 1;
+          int choiceInput = Int32.Parse(Console.ReadLine());
+          int choice = choiceInput - 1;
 
-        plowedAvailable[choice].AddResource((ISeedProducing)plant);
-        ResourceAddedMessage(plantType.Name, "Plowed");
+          plowedAvailable[choice].AddResource((ISeedProducing)plant);
+          ResourceAddedMessage(plantType.Name, "Plowed");
+        }
       }
       else if (isCompostProducingType)
       {
-        // Console.WriteLine("For Compost");
-        for (int i = 0; i < naturalAvailable.Count; i++)
+        // WHEN NO FIELDS AVAILABLE
+        if (naturalAvailable.Count == 0)
         {
-          Console.WriteLine($"  {i + 1}. Natural Field  ({naturalAvailable[i].PlantCount} rows of plants");
+          Console.WriteLine("!! NO FIELDS AVAILBLE !!");
+          ReturnToMainMessage();
         }
-        Console.WriteLine();
-        Console.WriteLine($"Place the {plantType.Name} where?");
-        Console.Write("> ");
+        // WHEN FIELDS ARE AVAILABLE
+        else
+        {
+          Console.WriteLine("For Compost");
+          for (int i = 0; i < naturalAvailable.Count; i++)
+          {
+            int currentCount = naturalAvailable[i].PlantCount;
+            string plantTotal = naturalAvailable[i].PlantTotal;
+            Console.WriteLine($"  {i + 1}. Natural Field  ({currentCount} row{farm.Pluralize(currentCount)} of plants{plantTotal})");
+          }
+          Console.WriteLine();
+          Console.WriteLine($"Place the {plantType.Name} where?");
+          Console.Write("> ");
 
-        int choiceInput = Int32.Parse(Console.ReadLine());
-        int choice = choiceInput - 1;
+          int choiceInput = Int32.Parse(Console.ReadLine());
+          int choice = choiceInput - 1;
 
-        naturalAvailable[choice].AddResource((ICompostProducing)plant);
-        ResourceAddedMessage(plantType.Name, "Natural Field");
+          naturalAvailable[choice].AddResource((ICompostProducing)plant);
+          ResourceAddedMessage(plantType.Name, "Natural");
+        }
       }
     }
   }
