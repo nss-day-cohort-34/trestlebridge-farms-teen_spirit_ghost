@@ -11,6 +11,7 @@ namespace Trestlebridge.Actions
     {
       Console.WriteLine("1. Grazing field");
       Console.WriteLine("2. Plowed field");
+      Console.WriteLine("3. Natural field");
 
       Console.WriteLine();
       Console.WriteLine("Choose what you want to create");
@@ -25,6 +26,9 @@ namespace Trestlebridge.Actions
           break;
         case 2:
           farm.AddPlowedField(new PlowedField());
+          break;
+        case 3:
+          farm.AddNaturalField(new NaturalField());
           break;
         default:
           break;

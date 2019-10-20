@@ -7,15 +7,13 @@ using Trestlebridge.Interfaces;
 
 namespace Trestlebridge.Models.Facilities
 {
-  public class PlowedField : IFacility<ISeedProducing>
+  public class NaturalField : IFacility<ICompostProducing>
   {
-    private int _capacity = 5; // set back to 13 after testing
+    private int _capacity = 5; // set back to 10 after testing
     private Guid _id = Guid.NewGuid();
 
-    private List<ISeedProducing> _plants = new List<ISeedProducing>();
 
     public int PlantCount { get { return _plants.Count; } }
-
     public string PlantTotal
     {
       get
@@ -34,6 +32,8 @@ namespace Trestlebridge.Models.Facilities
         return output;
       }
     }
+    private List<ICompostProducing> _plants = new List<ICompostProducing>();
+
     public double Capacity
     {
       get
@@ -42,18 +42,18 @@ namespace Trestlebridge.Models.Facilities
       }
     }
 
-    public void AddResource(ISeedProducing plant)
+    public void AddResource(ICompostProducing plant)
     {
       _plants.Add(plant);
+
     }
 
-    public void AddResource(List<ISeedProducing> plants)
+    public void AddResource(List<ICompostProducing> plants)
     {
       // TODO: implement this...
       throw new NotImplementedException();
 
     }
-
 
     public override string ToString()
     {
@@ -61,7 +61,7 @@ namespace Trestlebridge.Models.Facilities
       string shortId = $"{this._id.ToString().Substring(this._id.ToString().Length - 6)}";
       string plural = "s";
       if (this._plants.Count == 1) plural = "";
-      output.Append($"Plowed field {shortId} has {this._plants.Count} plant{plural}\n");
+      output.Append($"Natural field {shortId} has {this._plants.Count} plant{plural}\n");
       this._plants.ForEach(a => output.Append($"   {a}\n"));
 
       return output.ToString();
